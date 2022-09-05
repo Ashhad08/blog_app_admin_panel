@@ -4,7 +4,7 @@ import '../../../../../configurations/front_end.dart';
 import '../../../../elements/custom_button.dart';
 import '../../../../elements/custom_text.dart';
 import '../../../../routes/route_names.dart';
-import 'widgets/auth_text_field.dart';
+import '../../../../elements/auth_text_field.dart';
 
 class LoginViewBody extends StatelessWidget {
   const LoginViewBody({Key? key}) : super(key: key);
@@ -64,7 +64,36 @@ class LoginViewBody extends StatelessWidget {
                       onPressed: () {
                         Navigator.pushNamed(
                             context, RouteNames.dashboardViewRoute);
-                      })
+                      }),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CustomText(
+                        text: "Don’t have an account? ",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300,
+                        textColor: Color(0xff6E6E6E),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, RouteNames.signUpViewRoute);
+                        },
+                        child: const CustomText(
+                          text: "Sign up",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          textColor: FrontEndConfigs.kPrimaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                 ],
               ),
             ),

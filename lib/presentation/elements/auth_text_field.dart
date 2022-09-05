@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../../configurations/front_end.dart';
+import '../../configurations/front_end.dart';
 
 class AuthTextField extends StatelessWidget {
   const AuthTextField({

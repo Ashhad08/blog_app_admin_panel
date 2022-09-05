@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../routes/route_names.dart';
 import 'widgets/options_card.dart';
 
 class AdminDashboardViewBody extends StatelessWidget {
@@ -22,7 +23,9 @@ class AdminDashboardViewBody extends StatelessWidget {
                 ),
                 OptionsCard(
                   text: 'Write\nBlog',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, RouteNames.writeBlogViewRoute);
+                  },
                   iconPath: 'assets/icons/write_blog.png',
                 ),
                 const SizedBox(
@@ -30,7 +33,9 @@ class AdminDashboardViewBody extends StatelessWidget {
                 ),
                 OptionsCard(
                   text: 'My\nBlogs ',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, RouteNames.myBlogsViewRoute);
+                  },
                   iconPath: 'assets/icons/my_blogs.png',
                 ),
                 const SizedBox(
@@ -48,7 +53,10 @@ class AdminDashboardViewBody extends StatelessWidget {
                 ),
                 OptionsCard(
                   text: 'Manage\nPrograms',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, RouteNames.manageProgramsViewRoute);
+                  },
                   iconPath: 'assets/icons/manage_programs.png',
                 ),
                 const SizedBox(
@@ -74,7 +82,10 @@ class AdminDashboardViewBody extends StatelessWidget {
                 ),
                 OptionsCard(
                   text: 'Manage\nEvents',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, RouteNames.manageEventsViewRoute);
+                  },
                   iconPath: 'assets/icons/manage_events.png',
                 ),
                 const SizedBox(
@@ -100,7 +111,10 @@ class AdminDashboardViewBody extends StatelessWidget {
                 ),
                 OptionsCard(
                   text: 'Manage\nGroups',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, RouteNames.manageGroupsViewRoute);
+                  },
                   iconPath: 'assets/icons/manage_groupes.png',
                 ),
                 const SizedBox(
