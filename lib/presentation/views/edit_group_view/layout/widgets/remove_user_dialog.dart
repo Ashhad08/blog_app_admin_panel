@@ -76,7 +76,7 @@ class RemoveUserDialog extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                                 side: const BorderSide(
                                     color: FrontEndConfigs
-                                        .kReceivingChatBubbleColor))),
+                                        .kSecondaryColor))),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -84,7 +84,7 @@ class RemoveUserDialog extends StatelessWidget {
                             text: 'Cancel',
                             fontSize: 12,
                             textColor:
-                                FrontEndConfigs.kReceivingChatBubbleColor,
+                                FrontEndConfigs.kSecondaryColor,
                             fontWeight: FontWeight.bold)),
                   ),
                 ),

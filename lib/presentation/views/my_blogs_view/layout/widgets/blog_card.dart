@@ -72,7 +72,7 @@ class BlogCard extends StatelessWidget {
                   text: 'Title Here',
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  textColor: FrontEndConfigs.kReceivingChatBubbleColor,
+                  textColor: FrontEndConfigs.kSecondaryColor,
                 ),
                 CustomText(
                   text:
@@ -104,7 +104,7 @@ class BlogCard extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(
                   CupertinoIcons.chat_bubble_fill,
-                  color: FrontEndConfigs.kReceivingChatBubbleColor,
+                  color: FrontEndConfigs.kSecondaryColor,
                 ),
               ),
               const CustomText(
@@ -116,7 +116,7 @@ class BlogCard extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(
                     Icons.share,
-                    color: FrontEndConfigs.kReceivingChatBubbleColor,
+                    color: FrontEndConfigs.kSecondaryColor,
                   )),
             ],
           )

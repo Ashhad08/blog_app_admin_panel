@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../configurations/front_end.dart';
@@ -17,10 +18,11 @@ class _SplashViewState extends State<SplashView> {
   initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushNamedAndRemoveUntil(
+      FirebaseAuth.instance.currentUser!.uid.isNotEmpty
+          ? Navigator.pushNamed(context, RouteNames.dashboardViewRoute)
+          : Navigator.pushNamed(
         context,
         RouteNames.loginViewRoute,
-        (route) => false,
       );
     });
   }

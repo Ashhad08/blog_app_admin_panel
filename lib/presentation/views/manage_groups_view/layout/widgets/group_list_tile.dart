@@ -33,7 +33,7 @@ class GroupListTile extends StatelessWidget {
                 text: 'Northeast Group (32 Members)',
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                textColor: FrontEndConfigs.kReceivingChatBubbleColor,
+                textColor: FrontEndConfigs.kSecondaryColor,
               ),
             ),
             subtitle: const CustomText(

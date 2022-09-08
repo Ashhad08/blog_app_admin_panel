@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../elements/custom_text.dart';
 import 'layout/body.dart';
@@ -8,13 +9,21 @@ class AdminDashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const CustomText(
-            text: 'Admin Dashboard', fontSize: 16, fontWeight: FontWeight.w400),
+    return WillPopScope(
+      onWillPop: () async {
+        SystemNavigator.pop();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const CustomText(
+              text: 'Admin Dashboard',
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
+        ),
+        body: const AdminDashboardViewBody(),
       ),
-      body: const AdminDashboardViewBody(),
     );
   }
 }
