@@ -71,15 +71,15 @@ class CreateNewGroupViewBody extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Column(
                 children: [
-                  const WhiteTitleTextField(
-                    hintText: 'Group Title',
-                  ),
+                  // const WhiteTitleTextField(
+                  //   hintText: 'Group Title',
+                  // ),
                   const SizedBox(
                     height: 14,
                   ),
-                  const WhiteDescriptionTextField(
-                    hintText: 'Write group description',
-                  ),
+                  // const WhiteDescriptionTextField(
+                  //   hintText: 'Write group description',
+                  // ),
                   const SizedBox(
                     height: 30,
                   ),

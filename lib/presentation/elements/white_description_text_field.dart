@@ -6,12 +6,15 @@ class WhiteDescriptionTextField extends StatelessWidget {
   const WhiteDescriptionTextField({
     Key? key,
     required this.hintText,
+    required this.controller,
   }) : super(key: key);
   final String hintText;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       maxLines: 6,
       style: FrontEndConfigs.kTextStyle.copyWith(
           fontSize: 14,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-import '../../../../../backend/services/auth.dart';
+import '../../../../../backend/services/auth_services.dart';
 import '../../../../../configurations/front_end.dart';
 import '../../../../elements/custom_button.dart';
 import '../../../../elements/custom_text.dart';

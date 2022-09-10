@@ -2,9 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-import '../../../../../backend/models/admin.dart';
-import '../../../../../backend/services/auth.dart';
-import '../../../../../backend/services/system.dart';
+import '../../../../../backend/models/admin_model.dart';
+import '../../../../../backend/services/auth_services.dart';
+import '../../../../../backend/services/system_services.dart';
 import '../../../../../configurations/front_end.dart';
 import '../../../../elements/auth_text_field.dart';
 import '../../../../elements/custom_button.dart';
