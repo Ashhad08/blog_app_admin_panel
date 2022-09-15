@@ -5,11 +5,14 @@ import '../../configurations/front_end.dart';
 class FilledDescriptionField extends StatelessWidget {
   const FilledDescriptionField({
     Key? key,
+    required this.controller,
   }) : super(key: key);
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       maxLines: 6,
       style: FrontEndConfigs.kTextStyle.copyWith(
           fontSize: 12,

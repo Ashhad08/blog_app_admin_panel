@@ -18,12 +18,12 @@ class _SplashViewState extends State<SplashView> {
   initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      FirebaseAuth.instance.currentUser!.uid.isNotEmpty
+      FirebaseAuth.instance.currentUser != null
           ? Navigator.pushNamed(context, RouteNames.dashboardViewRoute)
           : Navigator.pushNamed(
-        context,
-        RouteNames.loginViewRoute,
-      );
+              context,
+              RouteNames.loginViewRoute,
+            );
     });
   }
 

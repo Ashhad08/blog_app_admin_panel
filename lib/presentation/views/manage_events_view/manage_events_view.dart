@@ -11,6 +11,7 @@ class ManageEventsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: FrontEndConfigs.kScaffoldColor,
       appBar: AppBar(
         title: const CustomText(
             text: 'Manage Events', fontSize: 14, fontWeight: FontWeight.bold),

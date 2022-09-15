@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../backend/models/blog.dart';
+import '../../../../backend/models/blog_model.dart';
 import '../../../../backend/services/admin_services.dart';
 import '../../../../configurations/front_end.dart';
 import '../../../../providers/storage_provider.dart';
@@ -26,7 +26,7 @@ class _WriteBlogViewBodyState extends State<WriteBlogViewBody> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   bool isLoading = false;
-  String blogImage = '';
+  String _blogImage = '';
 
   @override
   void dispose() {
@@ -50,7 +50,7 @@ class _WriteBlogViewBodyState extends State<WriteBlogViewBody> {
             children: [
               Consumer<StorageProvider>(
                 builder: ((context, value, child) {
-                  blogImage = value.downloadUrl;
+                  _blogImage = value.downloadUrl;
                   return GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
@@ -109,12 +109,12 @@ class _WriteBlogViewBodyState extends State<WriteBlogViewBody> {
                             );
                           });
                     },
-                    child: blogImage.isNotEmpty
+                    child: _blogImage.isNotEmpty
                         ? CachedNetworkImage(
                             height: 200,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            imageUrl: blogImage,
+                            imageUrl: _blogImage,
                             progressIndicatorBuilder:
                                 (context, url, downloadProgress) => Center(
                               child: CircularProgressIndicator(
@@ -158,14 +158,14 @@ class _WriteBlogViewBodyState extends State<WriteBlogViewBody> {
                           FocusManager.instance.primaryFocus!.unfocus();
                           adminServices
                               .createBlog(BlogModel(
-                            blogImage: blogImage.toString(),
+                            blogImage: _blogImage.toString(),
                             blogTitle: _titleController.text,
                             blogDescription: _descriptionController.text,
                           ))
                               .then((value) {
                             makeLoadingFalse();
                             storageProvider.setDownloadUrlEmpty();
-                            blogImage = '';
+                            _blogImage = '';
                             _titleController.clear();
                             _descriptionController.clear();
                             FrontEndConfigs.showSnackBar(
@@ -175,7 +175,7 @@ class _WriteBlogViewBodyState extends State<WriteBlogViewBody> {
                           }).onError((error, stackTrace) {
                             makeLoadingFalse();
                             storageProvider.setDownloadUrlEmpty();
-                            blogImage = '';
+                            _blogImage = '';
                             _titleController.clear();
                             _descriptionController.clear();
                             FrontEndConfigs.showSnackBar(

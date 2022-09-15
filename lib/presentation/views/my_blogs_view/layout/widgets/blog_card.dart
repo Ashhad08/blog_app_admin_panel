@@ -60,6 +60,7 @@ class BlogCard extends StatelessWidget {
               ? Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
+                      color: FrontEndConfigs.kWhiteColor,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(

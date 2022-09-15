@@ -24,7 +24,6 @@ class StorageProvider with ChangeNotifier {
       await uploadTask.whenComplete(() async {
         _downloadUrl = await uploadTask.snapshot.ref.getDownloadURL();
         notifyListeners();
-        print(downloadUrl);
       });
     } on firebase_core.FirebaseException catch (e) {
       debugPrint(e.message);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../backend/models/blog.dart';
+import '../../../../backend/models/blog_model.dart';
 import '../../../../backend/services/admin_services.dart';
 import '../../../../backend/services/system_services.dart';
 import '../../../../configurations/front_end.dart';

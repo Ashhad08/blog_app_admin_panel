@@ -11,6 +11,7 @@ class ManageProgramsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: FrontEndConfigs.kScaffoldColor,
       appBar: AppBar(
         title: const CustomText(
             text: 'Manage Programs', fontSize: 14, fontWeight: FontWeight.bold),

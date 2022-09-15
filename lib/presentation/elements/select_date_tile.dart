@@ -6,8 +6,10 @@ class SelectDateTile extends StatelessWidget {
   const SelectDateTile({
     Key? key,
     required this.onTap,
+    required this.date,
   }) : super(key: key);
   final VoidCallback onTap;
+  final String date;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +20,8 @@ class SelectDateTile extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomText(
-                text: 'Select Date',
+              CustomText(
+                text: date,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 textColor: Color(0xff9D9D9D),

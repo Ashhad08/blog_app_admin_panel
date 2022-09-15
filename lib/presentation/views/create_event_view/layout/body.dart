@@ -1,7 +1,17 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:blog_app_admin_panel/backend/models/event_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:firebase_core/firebase_core.dart' as firebase_core;
+import 'package:loading_overlay/loading_overlay.dart';
+import '../../../../backend/services/admin_services.dart';
+import '../../../../configurations/back_end.dart';
 import '../../../../configurations/front_end.dart';
-import '../../../elements/bottom_sheet_container.dart';
 import '../../../elements/custom_button.dart';
 import '../../../elements/custom_text.dart';
 import '../../../elements/filled_description_field.dart';
@@ -9,65 +19,67 @@ import '../../../elements/pick_image_placeholder.dart';
 import '../../../elements/select_date_tile.dart';
 import '../../../elements/title_underline_text_field.dart';
 
-class CreateEventViewBody extends StatelessWidget {
+class CreateEventViewBody extends StatefulWidget {
   const CreateEventViewBody({Key? key}) : super(key: key);
 
   @override
+  State<CreateEventViewBody> createState() => _CreateEventViewBodyState();
+}
+
+class _CreateEventViewBodyState extends State<CreateEventViewBody> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  bool isLoading = false;
+  final List<String> _eventImages = [];
+  String _eventDate = 'Select Date';
+  late DateTime _date;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _titleController.dispose();
+    _descriptionController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: FrontEndConfigs.kWhiteColor,
-      body: SingleChildScrollView(
+    AdminServices adminServices = AdminServices();
+    return LoadingOverlay(
+      isLoading: isLoading,
+      opacity: 0.2,
+      child: SingleChildScrollView(
         child: Column(
           children: [
             GestureDetector(
               onTap: () {
-                showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(10))),
-                    builder: (context) {
-                      return Container(
-                        height: 150,
-                        padding: const EdgeInsets.all(20),
-                        color: FrontEndConfigs.kWhiteColor,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // _pickImageWithOptionsAndUpload(
-                                  //     ImageSource.camera);
-                                  Navigator.pop(context);
-                                },
-                                child: const BottomSheetContainer(
-                                  text: 'Take Photo',
-                                  icon: Icons.camera_alt_outlined,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  // _pickImageWithOptionsAndUpload(
-                                  //     ImageSource.gallery);
-                                  Navigator.pop(context);
-                                },
-                                child: const BottomSheetContainer(
-                                  text: 'Gallery',
-                                  icon: Icons.collections,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                _titleController.text.isEmpty
+                    ? FrontEndConfigs.showSnackBar(
+                        context: context,
+                        message: 'Enter the event Title before selecting image',
+                        color: Colors.red)
+                    : pickImagesAndUpload(
+                        folderName: _titleController.text,
+                        context: context,
                       );
-                    });
               },
-              child: const PickImagePlaceHolder(),
+              child: _eventImages.isNotEmpty
+                  ? CachedNetworkImage(
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      imageUrl: _eventImages[0],
+                      progressIndicatorBuilder:
+                          (context, url, downloadProgress) => Center(
+                        child: CircularProgressIndicator(
+                            value: downloadProgress.progress),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.error,
+                        color: Colors.red,
+                        size: 20,
+                      ),
+                    )
+                  : const PickImagePlaceHolder(),
             ),
             const SizedBox(
               height: 50,
@@ -77,11 +89,14 @@ class CreateEventViewBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TitleUnderLineTextField(),
+                  TitleUnderLineTextField(
+                    controller: _titleController,
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
                   SelectDateTile(
+                    date: _eventDate,
                     onTap: () {
                       showDatePicker(
                         context: context,
@@ -89,8 +104,10 @@ class CreateEventViewBody extends StatelessWidget {
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2050),
                       ).then((value) {
-                        // _expiryDate = DateFormat("dd-MM-yyyy").format(value!);
-                        // setState(() {});
+                        _date = value ?? DateTime(2019, 1, 15);
+                        _eventDate = DateFormat("MMM d, yyyy")
+                            .format(value ?? DateTime(2019, 1, 15));
+                        setState(() {});
                       });
                     },
                   ),
@@ -106,7 +123,9 @@ class CreateEventViewBody extends StatelessWidget {
                   const SizedBox(
                     height: 12,
                   ),
-                  const FilledDescriptionField()
+                  FilledDescriptionField(
+                    controller: _descriptionController,
+                  )
                 ],
               ),
             ),
@@ -119,11 +138,90 @@ class CreateEventViewBody extends StatelessWidget {
                   buttonText: 'Create Event',
                   height: 50,
                   width: double.infinity,
-                  onPressed: () {}),
+                  onPressed: () async {
+                    makeLoadingTrue();
+                    FocusManager.instance.primaryFocus!.unfocus();
+                    adminServices
+                        .createEvent(EventModel(
+                            eventGalleryImages: _eventImages,
+                            eventTitle: _titleController.text,
+                            eventDescription: _descriptionController.text,
+                            eventDate: Timestamp.fromDate(_date)))
+                        .then((value) {
+                      makeLoadingFalse();
+                      _eventImages.clear();
+                      _eventDate = 'SelectDate';
+                      _titleController.clear();
+                      _descriptionController.clear();
+                      setState(() {});
+                      FrontEndConfigs.showSnackBar(
+                          context: context,
+                          message: 'Event created successfully',
+                          color: FrontEndConfigs.kPrimaryColor);
+                    }).onError((error, stackTrace) {
+                      makeLoadingFalse();
+                      _eventImages.clear();
+                      _eventDate = 'SelectDate';
+                      _titleController.clear();
+                      _descriptionController.clear();
+                      setState(() {});
+                      FrontEndConfigs.showSnackBar(
+                          context: context,
+                          message: 'Something went wrong',
+                          color: Colors.red);
+                    });
+                  }),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _uploadImagesAndSetURL(
+      List<XFile>? images, String eventName) async {
+    makeLoadingTrue();
+    for (var e in images!) {
+      File file = File(e.path);
+      UploadTask uploadTask = BackEndConfigs.kStorage
+          .ref('Events/$eventName/${e.name}')
+          .putFile(file);
+
+      try {
+        await uploadTask.whenComplete(() async {
+          _eventImages.add(await uploadTask.snapshot.ref.getDownloadURL());
+        });
+      } on firebase_core.FirebaseException catch (e) {
+        debugPrint(e.message);
+      }
+    }
+    makeLoadingFalse();
+  }
+
+  Future<void> pickImagesAndUpload(
+      {required String folderName, required BuildContext context}) async {
+    final List<XFile>? images = await ImagePicker().pickMultiImage();
+    if (images == null && images!.isEmpty) {
+      FrontEndConfigs.showSnackBar(
+          context: context, message: 'No images Selected', color: Colors.red);
+      return;
+    } else {
+      FrontEndConfigs.showSnackBar(
+          context: context,
+          message: 'Wait until Image Shows up',
+          color: FrontEndConfigs.kPrimaryColor);
+    }
+
+    _uploadImagesAndSetURL(images, folderName);
+  }
+
+  makeLoadingTrue() {
+    isLoading = true;
+    setState(() {});
+  }
+
+  makeLoadingFalse() {
+    isLoading = false;
+    setState(() {});
   }
 }
