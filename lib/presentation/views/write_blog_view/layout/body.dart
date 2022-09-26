@@ -156,7 +156,7 @@ class _WriteBlogViewBodyState extends State<WriteBlogViewBody> {
                         onPressed: () async {
                           makeLoadingTrue();
                           FocusManager.instance.primaryFocus!.unfocus();
-                          adminServices
+                          await adminServices
                               .createBlog(BlogModel(
                             blogImage: _blogImage.toString(),
                             blogTitle: _titleController.text,

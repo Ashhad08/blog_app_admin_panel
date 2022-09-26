@@ -1,5 +1,6 @@
 import 'package:blog_app_admin_panel/backend/models/blog_model.dart';
 import 'package:blog_app_admin_panel/backend/models/event_model.dart';
+import 'package:blog_app_admin_panel/backend/models/group_model.dart';
 import 'package:blog_app_admin_panel/backend/models/program_model.dart';
 import 'package:blog_app_admin_panel/configurations/back_end.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,5 +26,11 @@ class AdminServices {
     DocumentReference _ref =
         FirebaseFirestore.instance.collection('EventsCollection').doc();
     return await _ref.set(eventModel.toJson(_ref.id));
+  }
+
+  Future createGroup(GroupModel groupModel) async {
+    DocumentReference _ref =
+        FirebaseFirestore.instance.collection('groupsCollection').doc();
+    return await _ref.set(groupModel.toJson(_ref.id));
   }
 }

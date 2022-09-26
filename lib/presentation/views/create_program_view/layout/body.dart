@@ -42,7 +42,7 @@ class _CreateProgramViewBodyState extends State<CreateProgramViewBody> {
   Widget build(BuildContext context) {
     AdminServices adminServices = AdminServices();
     final storageProvider =
-    Provider.of<StorageProvider>(context, listen: false);
+        Provider.of<StorageProvider>(context, listen: false);
     return LoadingOverlay(
       isLoading: isLoading,
       opacity: 0.2,
@@ -71,12 +71,12 @@ class _CreateProgramViewBodyState extends State<CreateProgramViewBody> {
                                     onTap: () {
                                       storageProvider
                                           .pickImageWithOptionsAndUpload(
-                                        source: ImageSource.camera,
-                                        folderName: 'Programs',
-                                        context: context,
-                                      )
+                                            source: ImageSource.camera,
+                                            folderName: 'Programs',
+                                            context: context,
+                                          )
                                           .then((value) =>
-                                          Navigator.pop(context));
+                                              Navigator.pop(context));
                                     },
                                     child: const BottomSheetContainer(
                                       text: 'Take Photo',
@@ -92,12 +92,12 @@ class _CreateProgramViewBodyState extends State<CreateProgramViewBody> {
                                     onTap: () {
                                       storageProvider
                                           .pickImageWithOptionsAndUpload(
-                                        source: ImageSource.gallery,
-                                        folderName: 'Programs',
-                                        context: context,
-                                      )
+                                            source: ImageSource.gallery,
+                                            folderName: 'Programs',
+                                            context: context,
+                                          )
                                           .then((value) =>
-                                          Navigator.pop(context));
+                                              Navigator.pop(context));
                                     },
                                     child: const BottomSheetContainer(
                                       text: 'Gallery',
@@ -112,23 +112,21 @@ class _CreateProgramViewBodyState extends State<CreateProgramViewBody> {
                   },
                   child: _programImage.isNotEmpty
                       ? CachedNetworkImage(
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    imageUrl: _programImage,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                        Center(
-                          child: CircularProgressIndicator(
-                              value: downloadProgress.progress),
-                        ),
-                    errorWidget: (context, url, error) =>
-                    const Icon(
-                      Icons.error,
-                      color: Colors.red,
-                      size: 20,
-                    ),
-                  )
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          imageUrl: _programImage,
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                                value: downloadProgress.progress),
+                          ),
+                          errorWidget: (context, url, error) => const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                            size: 20,
+                          ),
+                        )
                       : const PickImagePlaceHolder(),
                 );
               }),
@@ -156,7 +154,8 @@ class _CreateProgramViewBodyState extends State<CreateProgramViewBody> {
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2050),
                       ).then((value) {
-                        _programDate = DateFormat("EEEE, MMMM d, yyyy").format(value!);
+                        _programDate =
+                            DateFormat("EEEE, MMMM d, yyyy").format(value!);
                         setState(() {});
                       });
                     },
@@ -191,12 +190,14 @@ class _CreateProgramViewBodyState extends State<CreateProgramViewBody> {
                   onPressed: () async {
                     makeLoadingTrue();
                     FocusManager.instance.primaryFocus!.unfocus();
-                    adminServices.createProgram(ProgramModel(
+                    await adminServices
+                        .createProgram(ProgramModel(
                       programImage: _programImage.toString(),
                       programTitle: _titleController.text,
                       programDescription: _descriptionController.text,
                       programDate: _programDate,
-                    )).then((value) {
+                    ))
+                        .then((value) {
                       makeLoadingFalse();
                       storageProvider.setDownloadUrlEmpty();
                       _programImage = '';

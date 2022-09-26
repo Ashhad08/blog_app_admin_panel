@@ -11,6 +11,7 @@ class ManageGroupsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: FrontEndConfigs.kWhiteColor,
       appBar: AppBar(
         title: const CustomText(
             text: 'Manage Groups', fontSize: 14, fontWeight: FontWeight.bold),

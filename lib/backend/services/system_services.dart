@@ -1,6 +1,7 @@
 import 'package:blog_app_admin_panel/backend/models/admin_model.dart';
 import 'package:blog_app_admin_panel/backend/models/blog_model.dart';
 import 'package:blog_app_admin_panel/backend/models/event_model.dart';
+import 'package:blog_app_admin_panel/backend/models/group_model.dart';
 import 'package:blog_app_admin_panel/backend/models/program_model.dart';
 import 'package:blog_app_admin_panel/configurations/back_end.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -55,6 +56,15 @@ class SystemServices {
         .snapshots()
         .map((myBlogsList) => myBlogsList.docs
             .map((singleBlog) => EventModel.fromJson(singleBlog.data()))
+            .toList());
+  }
+
+  Stream<List<GroupModel>> fetchMyGroups() {
+    return BackEndConfigs.kGroupsCollection
+        .where("adminId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots()
+        .map((myBlogsList) => myBlogsList.docs
+            .map((singleBlog) => GroupModel.fromJson(singleBlog.data()))
             .toList());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:blog_app_admin_panel/backend/models/group_model.dart';
 import 'package:flutter/material.dart';
 
 import '../elements/custom_text.dart';
@@ -44,7 +45,9 @@ class Routes {
       case RouteNames.createNewGroupViewRoute:
         return MaterialPageRoute(builder: (context) => CreateNewGroupView());
       case RouteNames.editGroupViewRoute:
-        return MaterialPageRoute(builder: (context) => EditGroupView());
+        return MaterialPageRoute(
+            builder: (context) =>
+                EditGroupView(settings.arguments as GroupModel));
       default:
         return MaterialPageRoute(
             builder: (context) => const Scaffold(

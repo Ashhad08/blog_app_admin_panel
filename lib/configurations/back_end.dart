@@ -10,6 +10,8 @@ class BackEndConfigs {
       FirebaseFirestore.instance.collection('programsCollection');
   static CollectionReference<Map<String, dynamic>> kEventsCollection =
       FirebaseFirestore.instance.collection('EventsCollection');
+  static CollectionReference<Map<String, dynamic>> kGroupsCollection =
+      FirebaseFirestore.instance.collection('groupsCollection');
 
   static final firebase_storage.FirebaseStorage kStorage =
       firebase_storage.FirebaseStorage.instance;

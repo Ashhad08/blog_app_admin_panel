@@ -141,7 +141,7 @@ class _CreateEventViewBodyState extends State<CreateEventViewBody> {
                   onPressed: () async {
                     makeLoadingTrue();
                     FocusManager.instance.primaryFocus!.unfocus();
-                    adminServices
+                    await adminServices
                         .createEvent(EventModel(
                             eventGalleryImages: _eventImages,
                             eventTitle: _titleController.text,
@@ -201,7 +201,7 @@ class _CreateEventViewBodyState extends State<CreateEventViewBody> {
   Future<void> pickImagesAndUpload(
       {required String folderName, required BuildContext context}) async {
     final List<XFile>? images = await ImagePicker().pickMultiImage();
-    if (images == null && images!.isEmpty) {
+    if (images == null || images.isEmpty) {
       FrontEndConfigs.showSnackBar(
           context: context, message: 'No images Selected', color: Colors.red);
       return;

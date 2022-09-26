@@ -1,11 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../configurations/front_end.dart';
 import '../../../../elements/custom_text.dart';
 
 class GroupListTile extends StatelessWidget {
-  const GroupListTile({Key? key, required this.onTap}) : super(key: key);
+  const GroupListTile(
+      {Key? key,
+      required this.onTap,
+      required this.imagePath,
+      required this.title,
+      required this.description,
+      required this.totalMembers})
+      : super(key: key);
   final VoidCallback onTap;
+  final String imagePath;
+  final String title;
+  final String description;
+  final String totalMembers;
 
   @override
   Widget build(BuildContext context) {
@@ -17,31 +29,40 @@ class GroupListTile extends StatelessWidget {
             height: 20,
           ),
           ListTile(
-            leading: Container(
+            leading: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: imagePath,
               height: 60,
               width: 60,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/images/group1.png'),
-                ),
+              imageBuilder: (context, imageProvider) {
+                return CircleAvatar(
+                  radius: 30,
+                  backgroundColor: FrontEndConfigs.kWhiteColor,
+                  backgroundImage: imageProvider,
+                );
+              },
+              progressIndicatorBuilder: (context, url, downloadProgress) =>
+                  Center(
+                child:
+                    CircularProgressIndicator(value: downloadProgress.progress),
+              ),
+              errorWidget: (context, url, error) => const Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 20,
               ),
             ),
-            title: const FittedBox(
-              child: CustomText(
-                text: 'Northeast Group (32 Members)',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                textColor: FrontEndConfigs.kSecondaryColor,
-              ),
+            title: CustomText(
+              text: '$title ($totalMembers)',
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              textColor: FrontEndConfigs.kSecondaryColor,
             ),
-            subtitle: const CustomText(
-                text:
-                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur.',
+            subtitle: CustomText(
+                text: description,
                 fontSize: 10,
                 maxLines: 2,
-                textColor: Color(0xff707070),
+                textColor: const Color(0xff707070),
                 fontWeight: FontWeight.w400),
           ),
           const SizedBox(
